@@ -3,7 +3,7 @@
 // @namespace   Violentmonkey Scripts
 // @match       https://www.linkedin.com/me/profile-views/urn:li:wvmp:summary/
 // @grant       none
-// @version     1.0
+// @version     1.1
 // @author      turtlebasket
 // @license     MIT
 // @description 3/30/2022
