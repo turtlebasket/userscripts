@@ -41,7 +41,6 @@ for (let line of docStr.split('\n')) {
     }
 }
 
-// create button
 let list = document.createElement("div")
 list.style.padding = "18px"
 list.style.backgroundColor = "lightgray"
