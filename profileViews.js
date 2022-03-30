@@ -5,6 +5,7 @@
 // @grant       none
 // @version     1.0
 // @author      turtlebasket
+// @license     MIT
 // @description 3/30/2022
 // ==/UserScript==
 
