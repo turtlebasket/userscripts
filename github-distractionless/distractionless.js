@@ -1,13 +1,14 @@
 // ==UserScript==
 // @name        GitHub Distractionless
 // @namespace   Violentmonkey Scripts
-// @match       https://github.com/
+// @match       https://github.com/*
 // @grant       none
-// @version     0.1
+// @version     0.1.1
 // @author      turtlebasket
 // @website     https://github.com/turtlebasket/userscripts/tree/master/github-distractionless
-// @description 2/9/2023, 4:24:34 PM
-// @run-at      document-start
+// @license     MIT
+// @description Userscript that makes sure that GitHub stays a work tool and doesn't turn into a social media website
+// @run-at      document-end
 // ==/UserScript==
 
 let hideEls = [];
@@ -19,7 +20,6 @@ let titleBarEls = document.getElementsByClassName("js-selected-navigation-item")
 for (let i = 0; i < titleBarEls.length; i++) {
     let el = titleBarEls[i];
     if (titleBarExclude.includes(el.innerHTML.trim())) {
-        console.log(el.innerHTML);
         hideEls.push(el);
     }
 }
