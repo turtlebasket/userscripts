@@ -8,12 +8,34 @@
 // @website     https://github.com/turtlebasket/userscripts/tree/master/github-distractionless
 // @license     MIT
 // @description Userscript that makes sure that GitHub stays a work tool and doesn't turn into a social media website
-// @run-at      document-end
+// @run-at      document-idle
 // ==/UserScript==
 
 let hideEls = [];
-let focusing = false;
 let urlPath = new URL(window.location.href).pathname;
+
+function runHideEls() {
+    for (let el of hideEls) {
+        el.setAttribute(
+            "style", 
+            getFocusing() ? "display: none;" : "display: auto;");
+    }
+}
+
+function getFocusing() {
+    let focusStatus = Boolean(localStorage.getItem("focusOn"));
+    if (focusStatus == null) {
+        localStorage.setItem(String(true))
+        return true;
+    }
+}
+
+function toggleFocusing() {
+    localStorage.setItem(String(!getFocusing()));
+    if (getFocusing()) {
+        runHideEls();
+    }
+}
 
 // title bar links - custom behavior for now
 const titleBarExclude = ["Explore", "Marketplace", "Codespaces"];
@@ -26,13 +48,15 @@ for (let i = 0; i < titleBarEls.length; i++) {
 }
 
 // general exclusion list
+// [<class>, <instances of occurrence>, <page filter>]
 
 [
     ["mail-status unread", [0], /^.*$/],
     ["UnderlineNav-item", [1], /^\/$/],
+    ["menu-item", [6], /^\/search[.*]$/],
 ]
-.forEach(([className, hideIndices, pathRegex]) => {
-    hideIndices.forEach(i => {
+.forEach(([className, hideInstances, pathRegex]) => {
+    hideInstances.forEach(i => {
         if (urlPath.search(pathRegex) > -1) {
             let el = document.getElementsByClassName(className)[i];
             if (typeof el === 'undefined') {
@@ -45,18 +69,8 @@ for (let i = 0; i < titleBarEls.length; i++) {
     });
 })
 
-// hide all els in els
-function toggleFocus() {
-    focusing = !focusing;
-    for (let el of hideEls) {
-        el.setAttribute(
-            "style", 
-            focusing ? "display: none;" : "display: auto;");
-    }
-}
-
 // initial state
-toggleFocus();
+runHideEls();
 
 // toggle switch 
 // NOTE: WIP, currently bugged due to github content policy. add later
@@ -70,7 +84,7 @@ toggleFocus();
 //     padding: 2px 4px;
 //     font-size: 12pt;`;
 // const focusModeSwitch = document.createElement("button");
-// focusModeSwitch.setAttribute("innerText", `Focus: ${focusing ? "on" : "off"}`);
+// focusModeSwitch.setAttribute("innerText", `Focus: ${getFocusing() ? "on" : "off"}`);
 // focusModeSwitch.setAttribute("style", btnStyle);
 // focusModeSwitch.setAttribute("onclick", toggleFocus)
 // document.getElementsByClassName("Header js-details-container Details")[0]
