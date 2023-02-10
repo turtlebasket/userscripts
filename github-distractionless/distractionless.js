@@ -13,6 +13,7 @@
 
 let hideEls = [];
 let focusing = false;
+let urlPath = new URL(window.location.href).pathname;
 
 // title bar links - custom behavior for now
 const titleBarExclude = ["Explore", "Marketplace", "Codespaces"];
@@ -27,17 +28,19 @@ for (let i = 0; i < titleBarEls.length; i++) {
 // general exclusion list
 
 [
-    ["mail-status unread", [0], /.*/],
+    ["mail-status unread", [0], /^.*$/],
     ["UnderlineNav-item", [1], /^\/$/],
 ]
-.forEach(([className, hideIndices, pageRegex]) => {
+.forEach(([className, hideIndices, pathRegex]) => {
     hideIndices.forEach(i => {
-        let el = document.getElementsByClassName(className)[i];
-        if (typeof el === 'undefined') {
-            console.log(`focus mode: unable to find element ${className} [ ${i} ]`)
-        }
-        else {
-            hideEls.push(el);
+        if (urlPath.search(pathRegex) > -1) {
+            let el = document.getElementsByClassName(className)[i];
+            if (typeof el === 'undefined') {
+                console.log(`focus mode: unable to find element ${className} [ ${i} ]`)
+            }
+            else {
+                hideEls.push(el);
+            }
         }
     });
 })
