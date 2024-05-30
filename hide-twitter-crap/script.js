@@ -6,6 +6,8 @@
 // @version     1.0
 // @author      turtlebasket
 // @run-at      document-idle
+// @license     MIT
+// @description Hide noise on Twitter ("Who to follow", etc)
 // ==/UserScript==
 
 
